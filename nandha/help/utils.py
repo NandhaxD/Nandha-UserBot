@@ -137,7 +137,7 @@ async def paste(content: str, ext: str = "txt"):
     }
     id = f"{uuid.uuid4()}.{ext}"
     payload = {
-        "public": False,  # Set to True if you want the Gist to be public
+        "public": True,  # Set to False if you want the Gist to be private
         "files": {
             id: {
                 "content": content
