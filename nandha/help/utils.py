@@ -129,7 +129,7 @@ LANGS = [
 
 
 async def paste(content: str, ext: str = "txt"):
-    api_url = "https://api.github.com/gists/e08f0a195acf449983815ee7bc3fde4e"
+    api_url = "https://api.github.com/gists"  # General Gist creation endpoint
     headers = {
         "Authorization": f"Bearer {config.GIST_TOKEN}",
         "accept": "application/vnd.github+json",
@@ -137,22 +137,23 @@ async def paste(content: str, ext: str = "txt"):
     }
     id = f"{uuid.uuid4()}.{ext}"
     payload = {
+        "public": False,  # Set to True if you want the Gist to be public
         "files": {
             id: {
                 "content": content
             }
         }
     }
-    
+
     try:
         async with aiohttp.ClientSession() as session:
             async with session.post(api_url, headers=headers, data=json.dumps(payload)) as response:
-                if response.status != 200:
+                if response.status != 201:  # 201 indicates successful creation
                     return "Pasting failed"
                 results = await response.json()
                 files = results['files']
                 paste = files.get(id, None)
-                paste_url = f"https://gist.github.com/NandhaxD/e08f0a195acf449983815ee7bc3fde4e#file-{id.replace('.', '-')}"
+                paste_url = results['html_url']  # URL to the newly created Gist
                 raw_url = paste['raw_url']
                 return f"<b><emoji id=5271604874419647061>🔗</emoji> <a href='{raw_url}'>Pasted link</a></b>"
     except Exception as e:
