@@ -55,9 +55,11 @@ You can easily customize the bot by adding new plugins or modifying existing one
 
 Example Plugin:
 ```python
-from pyrogram import Client, filters
+from pyrogram import filters
+from nandha import app, HELP
 
-@Client.on_message(filters.command("hello"))
+HELP['hello'] = 'Just Say hello!'
+@app.on_message(filters.command("hello"))
 async def hello(client, message):
     await message.reply("Hello! How can I help you?")
 ```
