@@ -1,4 +1,4 @@
-pyrofork
+kurigram #or pyrofork
 tgcrypto
 aiohttp
 aiofiles
